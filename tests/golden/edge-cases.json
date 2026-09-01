@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "instance-atomic",
+      "risk": "Instance",
+      "input": { "root": { "id": "instance-host", "type": "FRAME", "width": 360, "height": 96 }, "nodes": [
+        { "id": "instance", "parentId": "instance-host", "type": "INSTANCE", "x": 16, "y": 16, "width": 160, "height": 64, "componentReferenceId": "component-card" },
+        { "id": "instance-sibling", "parentId": "instance-host", "type": "RECTANGLE", "x": 192, "y": 16, "width": 152, "height": 64 }
+      ] },
+      "expected": { "disposition": "confirmation-required", "rootStrategy": "AUTO_LAYOUT", "atomicIds": ["instance"], "absoluteIds": [], "skippedIds": [], "preserveComponentReferenceIds": ["instance"], "mustNot": ["detach-instance", "reparent-instance-descendant"] }
+    },
+    {
+      "id": "missing-font",
+      "risk": "Missing font",
+      "input": { "root": { "id": "missing-font-host", "type": "FRAME", "width": 320, "height": 96 }, "nodes": [
+        { "id": "missing-font-text", "parentId": "missing-font-host", "type": "TEXT", "x": 16, "y": 16, "width": 160, "height": 24, "missingFont": true },
+        { "id": "missing-font-action", "parentId": "missing-font-host", "type": "RECTANGLE", "x": 192, "y": 16, "width": 112, "height": 48 }
+      ] },
+      "expected": { "disposition": "confirmation-required", "rootStrategy": "AUTO_LAYOUT", "atomicIds": [], "absoluteIds": [], "skippedIds": [], "preserveContentIds": ["missing-font-text"], "mustNot": ["edit-text-style", "drop-text-content"] }
+    },
+    {
+      "id": "locked-node",
+      "risk": "Locked node",
+      "input": { "root": { "id": "locked-host", "type": "FRAME", "width": 320, "height": 96 }, "nodes": [
+        { "id": "locked-content", "parentId": "locked-host", "type": "RECTANGLE", "x": 16, "y": 16, "width": 136, "height": 64, "locked": true },
+        { "id": "locked-sibling", "parentId": "locked-host", "type": "RECTANGLE", "x": 168, "y": 16, "width": 136, "height": 64 }
+      ] },
+      "expected": { "disposition": "confirmation-required", "rootStrategy": "AUTO_LAYOUT", "atomicIds": [], "absoluteIds": ["locked-content"], "skippedIds": [], "mustNot": ["mutate-locked-node"] }
+    },
+    {
+      "id": "locked-root",
+      "risk": "Locked root",
+      "input": { "root": { "id": "locked-root", "type": "FRAME", "width": 320, "height": 96, "locked": true }, "nodes": [
+        { "id": "locked-root-a", "parentId": "locked-root", "type": "RECTANGLE", "x": 16, "y": 16, "width": 136, "height": 64 },
+        { "id": "locked-root-b", "parentId": "locked-root", "type": "RECTANGLE", "x": 168, "y": 16, "width": 136, "height": 64 }
+      ] },
+      "expected": { "disposition": "unsupported", "rootStrategy": "SKIP", "atomicIds": [], "absoluteIds": [], "skippedIds": ["locked-root"], "mustNot": ["write-any-layout-change"] }
+    },
+    {
+      "id": "mask",
+      "risk": "Mask",
+      "input": { "root": { "id": "mask-host", "type": "FRAME", "width": 320, "height": 120 }, "nodes": [
+        { "id": "mask-layer", "parentId": "mask-host", "type": "VECTOR", "x": 16, "y": 16, "width": 136, "height": 88, "isMask": true },
+        { "id": "mask-sibling", "parentId": "mask-host", "type": "RECTANGLE", "x": 168, "y": 16, "width": 136, "height": 88 }
+      ] },
+      "expected": { "disposition": "unsupported", "rootStrategy": "SKIP", "atomicIds": [], "absoluteIds": ["mask-layer"], "skippedIds": ["mask-layer"], "mustNot": ["rewrite-mask-composition", "partial-write"] }
+    },
+    {
+      "id": "overlap",
+      "risk": "Overlapping flow children",
+      "input": { "root": { "id": "overlap-host", "type": "FRAME", "width": 320, "height": 96 }, "nodes": [
+        { "id": "overlap-a", "parentId": "overlap-host", "type": "RECTANGLE", "x": 16, "y": 16, "width": 176, "height": 64 },
+        { "id": "overlap-b", "parentId": "overlap-host", "type": "RECTANGLE", "x": 144, "y": 16, "width": 160, "height": 64 }
+      ] },
+      "expected": { "disposition": "confirmation-required", "rootStrategy": "AUTO_LAYOUT", "atomicIds": [], "absoluteIds": [], "skippedIds": [], "warningCodes": ["FLOW_OVERLAP"], "mustNot": ["silently-resolve-overlap"] }
+    },
+    {
+      "id": "hidden-node",
+      "risk": "Hidden node",
+      "input": { "root": { "id": "hidden-host", "type": "FRAME", "width": 320, "height": 96 }, "nodes": [
+        { "id": "hidden-visible", "parentId": "hidden-host", "type": "RECTANGLE", "x": 16, "y": 16, "width": 136, "height": 64 },
+        { "id": "hidden-layer", "parentId": "hidden-host", "type": "RECTANGLE", "x": 168, "y": 16, "width": 136, "height": 64, "visible": false }
+      ] },
+      "expected": { "disposition": "confirmation-required", "rootStrategy": "AUTO_LAYOUT", "atomicIds": [], "absoluteIds": ["hidden-layer"], "skippedIds": [], "preserveVisibilityIds": ["hidden-layer"], "mustNot": ["make-hidden-visible"] }
+    },
+    {
+      "id": "rotation",
+      "risk": "Rotation",
+      "input": { "root": { "id": "rotation-host", "type": "FRAME", "width": 320, "height": 120 }, "nodes": [
+        { "id": "rotated-layer", "parentId": "rotation-host", "type": "RECTANGLE", "x": 16, "y": 24, "width": 136, "height": 64, "rotation": 12 },
+        { "id": "rotation-sibling", "parentId": "rotation-host", "type": "RECTANGLE", "x": 168, "y": 24, "width": 136, "height": 64 }
+      ] },
+      "expected": { "disposition": "unsupported", "rootStrategy": "SKIP", "atomicIds": [], "absoluteIds": ["rotated-layer"], "skippedIds": ["rotated-layer"], "mustNot": ["treat-rotated-bounds-as-axis-aligned", "partial-write"] }
+    },
+    {
+      "id": "unsupported-input",
+      "risk": "Unsupported input",
+      "input": { "root": { "id": "unsupported-root", "type": "RECTANGLE", "width": 320, "height": 96 }, "nodes": [] },
+      "expected": { "disposition": "unsupported", "rootStrategy": "SKIP", "atomicIds": [], "absoluteIds": [], "skippedIds": ["unsupported-root"], "mustNot": ["convert-non-container-selection"] }
+    }
+  ]
+}
