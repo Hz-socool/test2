@@ -1,0 +1,25 @@
+{
+  "name": "figma-responsive-layout-refactor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Safety-first Figma plugin for refactoring fixed layer trees into responsive Auto Layout duplicates.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:verify": "node scripts/verify-build.mjs",
+    "check": "tsc -p tsconfig.json && tsc -p tsconfig.tests.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run check && npm run test && npm run build && npm run build:verify"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "1.137.0",
+    "@types/node": "^22.0.0",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

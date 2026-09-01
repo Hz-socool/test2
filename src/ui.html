@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Responsive Layout Refactor</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: var(--figma-color-bg, #f7f7f5);
+        --surface: var(--figma-color-bg-secondary, #ffffff);
+        --surface-strong: var(--figma-color-bg-tertiary, #efefec);
+        --text: var(--figma-color-text, #18181b);
+        --muted: var(--figma-color-text-secondary, #666661);
+        --border: var(--figma-color-border, #d7d7d2);
+        --accent: #0f766e;
+        --accent-hover: #115e59;
+        --danger: var(--figma-color-text-danger, #a13b36);
+        --warning: #9a6700;
+        --success: #1d6b4f;
+        font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 12px;
+      }
+
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--text); background: var(--bg); }
+      button, input { font: inherit; }
+      button:focus-visible, input:focus-visible, summary:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .shell { min-height: 100dvh; padding: 20px 18px 24px; }
+      .header { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; }
+      .eyebrow {
+        margin: 0 0 5px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      h1 { margin: 0; max-width: 280px; font-size: 22px; line-height: 1.05; letter-spacing: -0.035em; }
+      .version { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; }
+
+      .selection {
+        display: grid;
+        grid-template-columns: 8px 1fr;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 12px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .status-dot { width: 8px; height: 8px; margin-top: 3px; border-radius: 50%; background: var(--muted); }
+      .status-dot.ready { background: var(--success); }
+      .selection-name { margin: 0; font-weight: 650; }
+      .selection-copy { margin: 3px 0 0; color: var(--muted); line-height: 1.4; }
+
+      section { margin-top: 20px; }
+      .section-title { margin: 0 0 11px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+      .field-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+      .field-grid.constraints { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 10px; }
+      .field { display: grid; gap: 5px; }
+      label { color: var(--muted); font-size: 10px; font-weight: 650; }
+      input[type="number"] {
+        width: 100%;
+        height: 34px;
+        padding: 0 9px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+      }
+      input[type="number"]:hover { border-color: var(--muted); }
+      .helper { margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
+      .switch-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--text); }
+      .switch-row input { accent-color: var(--accent); }
+
+      .actions { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 16px; }
+      button {
+        min-height: 38px;
+        padding: 0 14px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), background-color 180ms ease, border-color 180ms ease;
+      }
+      button:active:not(:disabled) { transform: translateY(1px) scale(0.99); }
+      button:disabled { cursor: not-allowed; opacity: 0.45; }
+      .primary { color: #f8faf9; background: var(--accent); }
+      .primary:hover:not(:disabled) { background: var(--accent-hover); }
+      .secondary { color: var(--text); background: transparent; border-color: var(--border); }
+      .secondary:hover:not(:disabled) { background: var(--surface-strong); }
+
+      .result-shell {
+        min-height: 130px;
+        padding: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 92%, white 8%);
+      }
+      .empty { display: grid; min-height: 100px; align-content: center; gap: 5px; color: var(--muted); }
+      .empty strong { color: var(--text); font-size: 13px; }
+      .result-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .result-heading h2 { margin: 0; font-size: 14px; letter-spacing: -0.015em; }
+      .badge { padding: 4px 7px; border-radius: 999px; background: var(--surface-strong); color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: 0.05em; text-transform: uppercase; }
+      .badge.ready { color: var(--success); }
+      .badge.confirmation-required { color: var(--warning); }
+      .badge.unsupported, .badge.failed { color: var(--danger); }
+      .metric { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin-top: 14px; }
+      .metric-label { color: var(--muted); }
+      .metric-value { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; }
+      .meter { grid-column: 1 / -1; height: 4px; overflow: hidden; border-radius: 999px; background: var(--surface-strong); }
+      .meter > span { display: block; height: 100%; background: var(--accent); transform-origin: left center; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
+      .layout-summary { margin: 12px 0 0; color: var(--muted); line-height: 1.45; }
+      .warnings { display: grid; gap: 7px; margin: 13px 0 0; padding: 0; list-style: none; }
+      .warnings li { padding-left: 10px; border-left: 2px solid var(--warning); line-height: 1.4; }
+      .warnings li.blocker { border-left-color: var(--danger); }
+      details { margin-top: 13px; border-top: 1px solid var(--border); padding-top: 10px; }
+      summary { cursor: pointer; color: var(--muted); font-weight: 650; }
+      pre { max-height: 180px; overflow: auto; margin: 9px 0 0; padding: 10px; background: var(--surface-strong); border-radius: 7px; color: var(--text); font: 9px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; word-break: break-word; }
+
+      .validation-list { display: grid; gap: 7px; margin-top: 12px; }
+      .validation-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding-top: 7px; border-top: 1px solid var(--border); }
+      .validation-row span:last-child { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; }
+      .pass { color: var(--success); }
+      .fail { color: var(--danger); }
+
+      .error { margin-top: 12px; padding: 10px 11px; color: var(--danger); background: color-mix(in srgb, var(--danger) 8%, transparent); border-left: 2px solid var(--danger); line-height: 1.4; }
+      .hidden { display: none !important; }
+
+      .skeleton { display: grid; gap: 10px; padding: 4px 0; }
+      .skeleton span { display: block; height: 12px; border-radius: 4px; background: var(--surface-strong); animation: shimmer 1.35s ease-in-out infinite alternate; }
+      .skeleton span:nth-child(1) { width: 46%; }
+      .skeleton span:nth-child(2) { width: 92%; animation-delay: 100ms; }
+      .skeleton span:nth-child(3) { width: 68%; animation-delay: 200ms; }
+      @keyframes shimmer { from { opacity: 0.45; transform: translateX(0); } to { opacity: 0.9; transform: translateX(2px); } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Safety-first refactor</p>
+          <h1>Responsive Layout Refactor</h1>
+        </div>
+        <span class="version">plan v1</span>
+      </header>
+
+      <div class="selection" aria-live="polite">
+        <span id="selection-dot" class="status-dot"></span>
+        <div>
+          <p id="selection-name" class="selection-name">No eligible selection</p>
+          <p id="selection-copy" class="selection-copy">Select one Frame or Group to begin.</p>
+        </div>
+      </div>
+
+      <section aria-labelledby="config-title">
+        <h2 id="config-title" class="section-title">Breakpoint preset</h2>
+        <div class="field-grid">
+          <div class="field"><label for="desktop">Desktop</label><input id="desktop" type="number" min="1" value="1440" /></div>
+          <div class="field"><label for="tablet">Tablet</label><input id="tablet" type="number" min="1" value="768" /></div>
+          <div class="field"><label for="mobile">Mobile</label><input id="mobile" type="number" min="1" value="375" /></div>
+        </div>
+        <div class="field-grid constraints">
+          <div class="field"><label for="min-width">Minimum width</label><input id="min-width" type="number" min="1" value="240" /></div>
+          <div class="field"><label for="max-width">Maximum width</label><input id="max-width" type="number" min="1" value="1440" /></div>
+          <div class="field"><label for="min-height">Minimum height</label><input id="min-height" type="number" min="1" value="48" /></div>
+          <div class="field"><label for="max-height">Maximum height</label><input id="max-height" type="number" min="1" value="1024" /></div>
+          <div class="field"><label for="tolerance">Fidelity tolerance</label><input id="tolerance" type="number" min="0" step="0.5" value="2" /></div>
+        </div>
+        <p class="helper">Preset values are explicit inputs; the analyzer does not invent Min/Max constraints.</p>
+        <label class="switch-row"><input id="wrap" type="checkbox" checked /> Enable Wrap for horizontal flows</label>
+        <div class="actions">
+          <button id="analyze" class="primary" type="button" disabled>Analyze selection</button>
+        </div>
+      </section>
+
+      <section aria-labelledby="result-title">
+        <h2 id="result-title" class="section-title">Plan and validation</h2>
+        <div id="result-shell" class="result-shell" aria-live="polite">
+          <div class="empty"><strong>No analysis yet</strong><span>The source remains untouched until you approve a valid plan.</span></div>
+        </div>
+        <div id="convert-actions" class="actions hidden">
+          <button id="convert" class="secondary" type="button">Create responsive duplicate</button>
+        </div>
+        <div id="error" class="error hidden" role="alert"></div>
+      </section>
+    </main>
+
+    <script>
+      const elements = {
+        analyze: document.getElementById("analyze"),
+        convert: document.getElementById("convert"),
+        convertActions: document.getElementById("convert-actions"),
+        result: document.getElementById("result-shell"),
+        error: document.getElementById("error"),
+        selectionDot: document.getElementById("selection-dot"),
+        selectionName: document.getElementById("selection-name"),
+        selectionCopy: document.getElementById("selection-copy")
+      };
+      let eligible = false;
+      let currentPlan = null;
+
+      elements.analyze.addEventListener("click", () => {
+        clearError();
+        parent.postMessage({ pluginMessage: { type: "ANALYZE", configuration: readConfiguration() } }, "*");
+      });
+
+      elements.convert.addEventListener("click", () => {
+        if (!currentPlan) return;
+        clearError();
+        parent.postMessage({
+          pluginMessage: {
+            type: "CONVERT",
+            confirmed: currentPlan.disposition === "confirmation-required"
+          }
+        }, "*");
+      });
+
+      window.onmessage = (event) => {
+        const message = event.data.pluginMessage;
+        if (!message) return;
+
+        if (message.type === "SELECTION") {
+          eligible = message.eligible;
+          currentPlan = null;
+          elements.analyze.disabled = !eligible;
+          elements.selectionDot.classList.toggle("ready", eligible);
+          elements.selectionName.textContent = message.name || "No eligible selection";
+          elements.selectionCopy.textContent = message.reason;
+          elements.convertActions.classList.add("hidden");
+          return;
+        }
+        if (message.type === "ANALYSIS_STARTED" || message.type === "CONVERSION_STARTED") {
+          renderLoading(message.type === "ANALYSIS_STARTED" ? "Analyzing geometry" : "Building and validating duplicates");
+          elements.analyze.disabled = true;
+          elements.convert.disabled = true;
+          return;
+        }
+        if (message.type === "ANALYSIS_RESULT") {
+          currentPlan = message.plan;
+          elements.analyze.disabled = !eligible;
+          renderPlan(message.plan);
+          return;
+        }
+        if (message.type === "CONVERSION_RESULT") {
+          elements.analyze.disabled = !eligible;
+          renderReport(message.report);
+          return;
+        }
+        if (message.type === "ERROR") {
+          elements.analyze.disabled = !eligible;
+          elements.convert.disabled = !currentPlan || currentPlan.disposition === "unsupported";
+          showError(message.message);
+        }
+      };
+
+      function readConfiguration() {
+        return {
+          enableWrap: document.getElementById("wrap").checked,
+          minWidth: optionalNumber("min-width"),
+          maxWidth: optionalNumber("max-width"),
+          minHeight: optionalNumber("min-height"),
+          maxHeight: optionalNumber("max-height"),
+          fidelityTolerance: requiredNumber("tolerance"),
+          breakpoints: [
+            { id: "desktop", name: "Desktop", width: requiredNumber("desktop") },
+            { id: "tablet", name: "Tablet", width: requiredNumber("tablet") },
+            { id: "mobile", name: "Mobile", width: requiredNumber("mobile") }
+          ]
+        };
+      }
+
+      function requiredNumber(id) {
+        const value = Number(document.getElementById(id).value);
+        return Number.isFinite(value) ? value : 0;
+      }
+
+      function optionalNumber(id) {
+        const raw = document.getElementById(id).value.trim();
+        return raw === "" ? null : Number(raw);
+      }
+
+      function renderLoading(label) {
+        elements.result.replaceChildren();
+        const copy = document.createElement("p");
+        copy.className = "helper";
+        copy.textContent = label;
+        const skeleton = document.createElement("div");
+        skeleton.className = "skeleton";
+        skeleton.setAttribute("aria-hidden", "true");
+        skeleton.append(document.createElement("span"), document.createElement("span"), document.createElement("span"));
+        elements.result.append(copy, skeleton);
+      }
+
+      function renderPlan(plan) {
+        elements.result.replaceChildren();
+        const heading = document.createElement("div");
+        heading.className = "result-heading";
+        const title = document.createElement("h2");
+        title.textContent = plan.root.layout ? `${titleCase(plan.root.layout.direction)} Auto Layout` : "No safe layout";
+        const badge = document.createElement("span");
+        badge.className = `badge ${plan.disposition}`;
+        badge.textContent = plan.disposition.replaceAll("-", " ");
+        heading.append(title, badge);
+
+        const metric = document.createElement("div");
+        metric.className = "metric";
+        const label = document.createElement("span");
+        label.className = "metric-label";
+        label.textContent = "Confidence";
+        const value = document.createElement("span");
+        value.className = "metric-value";
+        value.textContent = `${Math.round(plan.confidence * 100)}%`;
+        const meter = document.createElement("div");
+        meter.className = "meter";
+        const fill = document.createElement("span");
+        fill.style.transform = `scaleX(${Math.max(0, Math.min(1, plan.confidence))})`;
+        meter.append(fill);
+        metric.append(label, value, meter);
+
+        const summary = document.createElement("p");
+        summary.className = "layout-summary";
+        summary.textContent = plan.root.layout
+          ? `${plan.root.orderedChildIds.length} flow children, ${plan.root.absoluteChildIds.length} Absolute, ${plan.breakpoints.length} breakpoints, ${plan.root.layout.wrap === "WRAP" ? "Wrap enabled" : "no Wrap"}.`
+          : "The analyzer found insufficient or unsupported geometry. No writes are allowed.";
+
+        elements.result.append(heading, metric, summary);
+        appendWarnings(plan.warnings);
+        appendDetails("Serializable ResponsivePlan", plan);
+
+        elements.convertActions.classList.remove("hidden");
+        elements.convert.disabled = plan.disposition === "unsupported";
+        elements.convert.textContent =
+          plan.disposition === "confirmation-required"
+            ? "Confirm risks and create duplicate"
+            : plan.disposition === "unsupported"
+              ? "Conversion blocked"
+              : "Create responsive duplicate";
+      }
+
+      function renderReport(report) {
+        elements.result.replaceChildren();
+        const heading = document.createElement("div");
+        heading.className = "result-heading";
+        const title = document.createElement("h2");
+        title.textContent = report.success ? "Validated duplicate created" : "Duplicate failed validation";
+        const badge = document.createElement("span");
+        badge.className = `badge ${report.success ? "ready" : "failed"}`;
+        badge.textContent = report.success ? "passed" : "failed";
+        heading.append(title, badge);
+        elements.result.append(heading);
+
+        const list = document.createElement("div");
+        list.className = "validation-list";
+        addValidationRow(list, "Source unchanged", report.sourceUnchanged);
+        addValidationRow(list, "Source-width fidelity", report.sourceWidthFidelity.passed);
+        report.breakpoints.forEach((validation) => {
+          addValidationRow(list, `${validation.name} / ${validation.width}`, validation.passed);
+        });
+        elements.result.append(list);
+        appendDetails("Conversion report", report);
+        elements.convertActions.classList.add("hidden");
+      }
+
+      function addValidationRow(parentNode, label, passed) {
+        const row = document.createElement("div");
+        row.className = "validation-row";
+        const name = document.createElement("span");
+        name.textContent = label;
+        const state = document.createElement("span");
+        state.className = passed ? "pass" : "fail";
+        state.textContent = passed ? "PASS" : "FAIL";
+        row.append(name, state);
+        parentNode.append(row);
+      }
+
+      function appendWarnings(warnings) {
+        if (!warnings.length) return;
+        const list = document.createElement("ul");
+        list.className = "warnings";
+        warnings.slice(0, 5).forEach((warning) => {
+          const item = document.createElement("li");
+          item.className = warning.severity;
+          item.textContent = warning.message;
+          list.append(item);
+        });
+        elements.result.append(list);
+      }
+
+      function appendDetails(label, value) {
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.textContent = label;
+        const pre = document.createElement("pre");
+        pre.textContent = JSON.stringify(value, null, 2);
+        details.append(summary, pre);
+        elements.result.append(details);
+      }
+
+      function titleCase(value) {
+        return value.charAt(0) + value.slice(1).toLowerCase();
+      }
+
+      function showError(message) {
+        elements.error.textContent = message;
+        elements.error.classList.remove("hidden");
+      }
+
+      function clearError() {
+        elements.error.textContent = "";
+        elements.error.classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>
