@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "geometryTolerance": 2,
+  "breakpoints": [
+    { "id": "desktop", "name": "Desktop", "width": 1440 },
+    { "id": "tablet", "name": "Tablet", "width": 768 },
+    { "id": "mobile", "name": "Mobile", "width": 375 }
+  ],
+  "fixtures": [
+    {
+      "id": "button",
+      "title": "Button with label and icon",
+      "pattern": "button",
+      "input": {
+        "root": { "id": "button", "type": "FRAME", "width": 128, "height": 48 },
+        "nodes": [
+          { "id": "button-label", "parentId": "button", "type": "TEXT", "x": 16, "y": 12, "width": 56, "height": 24 },
+          { "id": "button-icon", "parentId": "button", "type": "VECTOR", "x": 80, "y": 16, "width": 16, "height": 16 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "HORIZONTAL", "wrap": "NO_WRAP", "itemSpacing": 8, "counterAxisSpacing": 0, "padding": { "top": 12, "right": 32, "bottom": 12, "left": 16 }, "sizing": { "horizontal": "HUG", "vertical": "HUG", "minWidth": null, "maxWidth": null, "minHeight": null, "maxHeight": null }, "flowChildIds": ["button-label", "button-icon"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "button", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["button-label", "button-icon"], "absoluteChildIds": [] },
+          { "id": "button-label", "parentId": "button", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "button-icon", "parentId": "button", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [] }],
+        "preserve": { "contentIds": ["button-label", "button-icon"], "visualStyleIds": ["button", "button-label", "button-icon"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "navigation",
+      "title": "Navigation bar with nested links and CTA",
+      "pattern": "navigation",
+      "input": {
+        "root": { "id": "navigation", "type": "FRAME", "width": 1024, "height": 64 },
+        "nodes": [
+          { "id": "nav-logo", "parentId": "navigation", "type": "RECTANGLE", "x": 24, "y": 16, "width": 120, "height": 32 },
+          { "id": "nav-links", "parentId": "navigation", "type": "FRAME", "x": 220, "y": 16, "width": 420, "height": 32 },
+          { "id": "nav-link-home", "parentId": "nav-links", "type": "TEXT", "x": 0, "y": 4, "width": 64, "height": 24 },
+          { "id": "nav-link-products", "parentId": "nav-links", "type": "TEXT", "x": 88, "y": 4, "width": 96, "height": 24 },
+          { "id": "nav-link-pricing", "parentId": "nav-links", "type": "TEXT", "x": 208, "y": 4, "width": 72, "height": 24 },
+          { "id": "nav-cta", "parentId": "navigation", "type": "FRAME", "x": 848, "y": 12, "width": 152, "height": 40 },
+          { "id": "nav-cta-label", "parentId": "nav-cta", "type": "TEXT", "x": 16, "y": 8, "width": 120, "height": 24 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "HORIZONTAL", "wrap": "NO_WRAP", "itemSpacing": 56, "counterAxisSpacing": 0, "padding": { "top": 12, "right": 24, "bottom": 12, "left": 24 }, "sizing": { "horizontal": "FILL", "vertical": "FIXED", "minWidth": 640, "maxWidth": 1440, "minHeight": 64, "maxHeight": 64 }, "flowChildIds": ["nav-logo", "nav-links", "nav-cta"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "navigation", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["nav-logo", "nav-links", "nav-cta"], "absoluteChildIds": [] },
+          { "id": "nav-logo", "parentId": "navigation", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "nav-links", "parentId": "navigation", "strategy": "AUTO_LAYOUT", "flowChildIds": ["nav-link-home", "nav-link-products", "nav-link-pricing"], "absoluteChildIds": [] },
+          { "id": "nav-link-home", "parentId": "nav-links", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "nav-link-products", "parentId": "nav-links", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "nav-link-pricing", "parentId": "nav-links", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "nav-cta", "parentId": "navigation", "strategy": "AUTO_LAYOUT", "flowChildIds": ["nav-cta-label"], "absoluteChildIds": [] },
+          { "id": "nav-cta-label", "parentId": "nav-cta", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [{ "nodeId": "navigation", "hiddenChildIds": ["nav-link-pricing"] }] }, { "id": "mobile", "overrides": [{ "nodeId": "navigation", "hiddenChildIds": ["nav-links"] }] }],
+        "preserve": { "contentIds": ["nav-logo", "nav-link-home", "nav-link-products", "nav-link-pricing", "nav-cta-label"], "visualStyleIds": ["navigation", "nav-logo", "nav-links", "nav-cta"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "card",
+      "title": "Card with media, body, badge, and action",
+      "pattern": "card",
+      "input": {
+        "root": { "id": "card", "type": "FRAME", "width": 320, "height": 360 },
+        "nodes": [
+          { "id": "card-media", "parentId": "card", "type": "RECTANGLE", "x": 16, "y": 16, "width": 288, "height": 160 },
+          { "id": "card-badge", "parentId": "card", "type": "FRAME", "x": 232, "y": 28, "width": 56, "height": 24 },
+          { "id": "card-body", "parentId": "card", "type": "FRAME", "x": 16, "y": 192, "width": 288, "height": 140 },
+          { "id": "card-title", "parentId": "card-body", "type": "TEXT", "x": 0, "y": 0, "width": 240, "height": 24 },
+          { "id": "card-description", "parentId": "card-body", "type": "TEXT", "x": 0, "y": 36, "width": 288, "height": 48 },
+          { "id": "card-action", "parentId": "card-body", "type": "FRAME", "x": 0, "y": 100, "width": 120, "height": 40 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "confirmation-required",
+        "root": { "direction": "VERTICAL", "wrap": "NO_WRAP", "itemSpacing": 16, "counterAxisSpacing": 0, "padding": { "top": 16, "right": 16, "bottom": 28, "left": 16 }, "sizing": { "horizontal": "FIXED", "vertical": "HUG", "minWidth": 280, "maxWidth": 480, "minHeight": null, "maxHeight": null }, "flowChildIds": ["card-media", "card-body"], "absoluteChildIds": ["card-badge"] },
+        "hierarchy": [
+          { "id": "card", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["card-media", "card-body"], "absoluteChildIds": ["card-badge"] },
+          { "id": "card-media", "parentId": "card", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "card-badge", "parentId": "card", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "card-body", "parentId": "card", "strategy": "AUTO_LAYOUT", "flowChildIds": ["card-title", "card-description", "card-action"], "absoluteChildIds": [] },
+          { "id": "card-title", "parentId": "card-body", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "card-description", "parentId": "card-body", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "card-action", "parentId": "card-body", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [{ "nodeId": "card-body", "horizontalSizing": "FILL" }] }],
+        "preserve": { "contentIds": ["card-title", "card-description", "card-action"], "visualStyleIds": ["card", "card-media", "card-body", "card-badge", "card-action"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "form",
+      "title": "Vertical form with field subtrees",
+      "pattern": "form",
+      "input": {
+        "root": { "id": "form", "type": "FRAME", "width": 420, "height": 400 },
+        "nodes": [
+          { "id": "form-name", "parentId": "form", "type": "FRAME", "x": 24, "y": 24, "width": 372, "height": 72 },
+          { "id": "form-name-label", "parentId": "form-name", "type": "TEXT", "x": 0, "y": 0, "width": 88, "height": 20 },
+          { "id": "form-name-input", "parentId": "form-name", "type": "RECTANGLE", "x": 0, "y": 28, "width": 372, "height": 44 },
+          { "id": "form-email", "parentId": "form", "type": "FRAME", "x": 24, "y": 112, "width": 372, "height": 72 },
+          { "id": "form-email-label", "parentId": "form-email", "type": "TEXT", "x": 0, "y": 0, "width": 96, "height": 20 },
+          { "id": "form-email-input", "parentId": "form-email", "type": "RECTANGLE", "x": 0, "y": 28, "width": 372, "height": 44 },
+          { "id": "form-submit", "parentId": "form", "type": "FRAME", "x": 24, "y": 328, "width": 140, "height": 48 },
+          { "id": "form-submit-label", "parentId": "form-submit", "type": "TEXT", "x": 16, "y": 12, "width": 108, "height": 24 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "VERTICAL", "wrap": "NO_WRAP", "itemSpacing": 16, "counterAxisSpacing": 0, "padding": { "top": 24, "right": 24, "bottom": 24, "left": 24 }, "sizing": { "horizontal": "FIXED", "vertical": "HUG", "minWidth": 320, "maxWidth": 640, "minHeight": null, "maxHeight": null }, "flowChildIds": ["form-name", "form-email", "form-submit"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "form", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["form-name", "form-email", "form-submit"], "absoluteChildIds": [] },
+          { "id": "form-name", "parentId": "form", "strategy": "AUTO_LAYOUT", "flowChildIds": ["form-name-label", "form-name-input"], "absoluteChildIds": [] },
+          { "id": "form-name-label", "parentId": "form-name", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "form-name-input", "parentId": "form-name", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "form-email", "parentId": "form", "strategy": "AUTO_LAYOUT", "flowChildIds": ["form-email-label", "form-email-input"], "absoluteChildIds": [] },
+          { "id": "form-email-label", "parentId": "form-email", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "form-email-input", "parentId": "form-email", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "form-submit", "parentId": "form", "strategy": "AUTO_LAYOUT", "flowChildIds": ["form-submit-label"], "absoluteChildIds": [] },
+          { "id": "form-submit-label", "parentId": "form-submit", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [{ "nodeId": "form-submit", "horizontalSizing": "FILL" }] }],
+        "preserve": { "contentIds": ["form-name-label", "form-email-label", "form-submit-label"], "visualStyleIds": ["form", "form-name-input", "form-email-input", "form-submit"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "list",
+      "title": "List with repeated nested rows",
+      "pattern": "list",
+      "input": {
+        "root": { "id": "list", "type": "FRAME", "width": 360, "height": 400 },
+        "nodes": [
+          { "id": "list-row-1", "parentId": "list", "type": "FRAME", "x": 16, "y": 16, "width": 328, "height": 64 },
+          { "id": "list-avatar-1", "parentId": "list-row-1", "type": "ELLIPSE", "x": 0, "y": 8, "width": 48, "height": 48 },
+          { "id": "list-name-1", "parentId": "list-row-1", "type": "TEXT", "x": 64, "y": 12, "width": 160, "height": 20 },
+          { "id": "list-meta-1", "parentId": "list-row-1", "type": "TEXT", "x": 64, "y": 36, "width": 120, "height": 16 },
+          { "id": "list-row-2", "parentId": "list", "type": "FRAME", "x": 16, "y": 88, "width": 328, "height": 64 },
+          { "id": "list-avatar-2", "parentId": "list-row-2", "type": "ELLIPSE", "x": 0, "y": 8, "width": 48, "height": 48 },
+          { "id": "list-name-2", "parentId": "list-row-2", "type": "TEXT", "x": 64, "y": 12, "width": 160, "height": 20 },
+          { "id": "list-meta-2", "parentId": "list-row-2", "type": "TEXT", "x": 64, "y": 36, "width": 120, "height": 16 },
+          { "id": "list-row-3", "parentId": "list", "type": "FRAME", "x": 16, "y": 160, "width": 328, "height": 64 },
+          { "id": "list-avatar-3", "parentId": "list-row-3", "type": "ELLIPSE", "x": 0, "y": 8, "width": 48, "height": 48 },
+          { "id": "list-name-3", "parentId": "list-row-3", "type": "TEXT", "x": 64, "y": 12, "width": 160, "height": 20 },
+          { "id": "list-meta-3", "parentId": "list-row-3", "type": "TEXT", "x": 64, "y": 36, "width": 120, "height": 16 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "VERTICAL", "wrap": "NO_WRAP", "itemSpacing": 8, "counterAxisSpacing": 0, "padding": { "top": 16, "right": 16, "bottom": 176, "left": 16 }, "sizing": { "horizontal": "FIXED", "vertical": "HUG", "minWidth": 280, "maxWidth": 720, "minHeight": null, "maxHeight": null }, "flowChildIds": ["list-row-1", "list-row-2", "list-row-3"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "list", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["list-row-1", "list-row-2", "list-row-3"], "absoluteChildIds": [] },
+          { "id": "list-row-1", "parentId": "list", "strategy": "AUTO_LAYOUT", "flowChildIds": ["list-avatar-1", "list-name-1", "list-meta-1"], "absoluteChildIds": [] },
+          { "id": "list-row-2", "parentId": "list", "strategy": "AUTO_LAYOUT", "flowChildIds": ["list-avatar-2", "list-name-2", "list-meta-2"], "absoluteChildIds": [] },
+          { "id": "list-row-3", "parentId": "list", "strategy": "AUTO_LAYOUT", "flowChildIds": ["list-avatar-3", "list-name-3", "list-meta-3"], "absoluteChildIds": [] },
+          { "id": "list-avatar-1", "parentId": "list-row-1", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-name-1", "parentId": "list-row-1", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-meta-1", "parentId": "list-row-1", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-avatar-2", "parentId": "list-row-2", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-name-2", "parentId": "list-row-2", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-meta-2", "parentId": "list-row-2", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-avatar-3", "parentId": "list-row-3", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-name-3", "parentId": "list-row-3", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "list-meta-3", "parentId": "list-row-3", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [{ "nodeId": "list", "horizontalSizing": "FILL" }] }],
+        "preserve": { "contentIds": ["list-name-1", "list-meta-1", "list-name-2", "list-meta-2", "list-name-3", "list-meta-3"], "visualStyleIds": ["list", "list-row-1", "list-row-2", "list-row-3", "list-avatar-1", "list-avatar-2", "list-avatar-3"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "toolbar",
+      "title": "Toolbar with intentionally absolute help affordance",
+      "pattern": "toolbar",
+      "input": {
+        "root": { "id": "toolbar", "type": "FRAME", "width": 440, "height": 80 },
+        "nodes": [
+          { "id": "toolbar-back", "parentId": "toolbar", "type": "FRAME", "x": 16, "y": 16, "width": 96, "height": 48 },
+          { "id": "toolbar-preview", "parentId": "toolbar", "type": "FRAME", "x": 124, "y": 16, "width": 132, "height": 48 },
+          { "id": "toolbar-publish", "parentId": "toolbar", "type": "FRAME", "x": 268, "y": 16, "width": 156, "height": 48 },
+          { "id": "toolbar-help", "parentId": "toolbar", "type": "ELLIPSE", "x": 408, "y": 8, "width": 24, "height": 24 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "confirmation-required",
+        "root": { "direction": "HORIZONTAL", "wrap": "WRAP", "itemSpacing": 12, "counterAxisSpacing": 12, "padding": { "top": 16, "right": 16, "bottom": 16, "left": 16 }, "sizing": { "horizontal": "FIXED", "vertical": "HUG", "minWidth": 240, "maxWidth": 1440, "minHeight": 48, "maxHeight": 1024 }, "flowChildIds": ["toolbar-back", "toolbar-preview", "toolbar-publish"], "absoluteChildIds": ["toolbar-help"] },
+        "hierarchy": [
+          { "id": "toolbar", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["toolbar-back", "toolbar-preview", "toolbar-publish"], "absoluteChildIds": ["toolbar-help"] },
+          { "id": "toolbar-back", "parentId": "toolbar", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "toolbar-preview", "parentId": "toolbar", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "toolbar-publish", "parentId": "toolbar", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "toolbar-help", "parentId": "toolbar", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [{ "nodeId": "toolbar", "wrap": "WRAP" }] }],
+        "preserve": { "contentIds": ["toolbar-back", "toolbar-preview", "toolbar-publish"], "visualStyleIds": ["toolbar", "toolbar-back", "toolbar-preview", "toolbar-publish", "toolbar-help"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "nested-layout",
+      "title": "Section with vertical shell and horizontal content row",
+      "pattern": "nested-layout",
+      "input": {
+        "root": { "id": "section", "type": "FRAME", "width": 960, "height": 520 },
+        "nodes": [
+          { "id": "section-header", "parentId": "section", "type": "FRAME", "x": 32, "y": 24, "width": 896, "height": 56 },
+          { "id": "section-title", "parentId": "section-header", "type": "TEXT", "x": 0, "y": 16, "width": 240, "height": 24 },
+          { "id": "section-action", "parentId": "section-header", "type": "FRAME", "x": 776, "y": 8, "width": 120, "height": 40 },
+          { "id": "section-content", "parentId": "section", "type": "FRAME", "x": 32, "y": 104, "width": 896, "height": 320 },
+          { "id": "section-sidebar", "parentId": "section-content", "type": "FRAME", "x": 0, "y": 0, "width": 240, "height": 320 },
+          { "id": "section-main", "parentId": "section-content", "type": "FRAME", "x": 272, "y": 0, "width": 624, "height": 320 },
+          { "id": "section-footer", "parentId": "section", "type": "FRAME", "x": 32, "y": 448, "width": 896, "height": 40 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "VERTICAL", "wrap": "NO_WRAP", "itemSpacing": 24, "counterAxisSpacing": 0, "padding": { "top": 24, "right": 32, "bottom": 32, "left": 32 }, "sizing": { "horizontal": "FILL", "vertical": "HUG", "minWidth": 640, "maxWidth": 1440, "minHeight": null, "maxHeight": null }, "flowChildIds": ["section-header", "section-content", "section-footer"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "section", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["section-header", "section-content", "section-footer"], "absoluteChildIds": [] },
+          { "id": "section-header", "parentId": "section", "strategy": "AUTO_LAYOUT", "flowChildIds": ["section-title", "section-action"], "absoluteChildIds": [] },
+          { "id": "section-content", "parentId": "section", "strategy": "AUTO_LAYOUT", "flowChildIds": ["section-sidebar", "section-main"], "absoluteChildIds": [] },
+          { "id": "section-footer", "parentId": "section", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "section-title", "parentId": "section-header", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "section-action", "parentId": "section-header", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "section-sidebar", "parentId": "section-content", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "section-main", "parentId": "section-content", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [{ "nodeId": "section-content", "horizontalSizing": "FILL" }] }, { "id": "mobile", "overrides": [{ "nodeId": "section-content", "direction": "VERTICAL", "childOrder": ["section-main", "section-sidebar"] }] }],
+        "preserve": { "contentIds": ["section-title"], "visualStyleIds": ["section", "section-header", "section-action", "section-content", "section-sidebar", "section-main", "section-footer"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "wrap",
+      "title": "Chip row that wraps whole items onto a second track",
+      "pattern": "wrap",
+      "input": {
+        "root": { "id": "chip-row", "type": "FRAME", "width": 320, "height": 112 },
+        "nodes": [
+          { "id": "chip-a", "parentId": "chip-row", "type": "FRAME", "x": 16, "y": 16, "width": 64, "height": 32 },
+          { "id": "chip-b", "parentId": "chip-row", "type": "FRAME", "x": 88, "y": 16, "width": 96, "height": 32 },
+          { "id": "chip-c", "parentId": "chip-row", "type": "FRAME", "x": 192, "y": 16, "width": 80, "height": 32 },
+          { "id": "chip-d", "parentId": "chip-row", "type": "FRAME", "x": 16, "y": 60, "width": 120, "height": 32 },
+          { "id": "chip-e", "parentId": "chip-row", "type": "FRAME", "x": 144, "y": 60, "width": 88, "height": 32 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "HORIZONTAL", "wrap": "WRAP", "itemSpacing": 8, "counterAxisSpacing": 12, "padding": { "top": 16, "right": 48, "bottom": 20, "left": 16 }, "sizing": { "horizontal": "FILL", "vertical": "HUG", "minWidth": 180, "maxWidth": 720, "minHeight": null, "maxHeight": null }, "flowChildIds": ["chip-a", "chip-b", "chip-c", "chip-d", "chip-e"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "chip-row", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["chip-a", "chip-b", "chip-c", "chip-d", "chip-e"], "absoluteChildIds": [] },
+          { "id": "chip-a", "parentId": "chip-row", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "chip-b", "parentId": "chip-row", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "chip-c", "parentId": "chip-row", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "chip-d", "parentId": "chip-row", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "chip-e", "parentId": "chip-row", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [{ "nodeId": "chip-row", "wrap": "WRAP", "horizontalSizing": "FILL" }] }],
+        "preserve": { "contentIds": ["chip-a", "chip-b", "chip-c", "chip-d", "chip-e"], "visualStyleIds": ["chip-row", "chip-a", "chip-b", "chip-c", "chip-d", "chip-e"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "min-max",
+      "title": "Panel with explicit width and height bounds",
+      "pattern": "min-max",
+      "input": {
+        "root": { "id": "bounded-panel", "type": "FRAME", "width": 600, "height": 240 },
+        "nodes": [
+          { "id": "bounded-title", "parentId": "bounded-panel", "type": "TEXT", "x": 32, "y": 32, "width": 240, "height": 24 },
+          { "id": "bounded-content", "parentId": "bounded-panel", "type": "RECTANGLE", "x": 32, "y": 80, "width": 536, "height": 128 }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "VERTICAL", "wrap": "NO_WRAP", "itemSpacing": 24, "counterAxisSpacing": 0, "padding": { "top": 32, "right": 32, "bottom": 32, "left": 32 }, "sizing": { "horizontal": "FIXED", "vertical": "FIXED", "minWidth": 320, "maxWidth": 960, "minHeight": 160, "maxHeight": 640 }, "flowChildIds": ["bounded-title", "bounded-content"], "absoluteChildIds": [] },
+        "hierarchy": [
+          { "id": "bounded-panel", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["bounded-title", "bounded-content"], "absoluteChildIds": [] },
+          { "id": "bounded-title", "parentId": "bounded-panel", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "bounded-content", "parentId": "bounded-panel", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [{ "id": "desktop", "overrides": [] }, { "id": "tablet", "overrides": [] }, { "id": "mobile", "overrides": [{ "nodeId": "bounded-panel", "horizontalSizing": "FILL", "verticalSizing": "HUG" }] }],
+        "preserve": { "contentIds": ["bounded-title", "bounded-content"], "visualStyleIds": ["bounded-panel", "bounded-content"], "componentReferenceIds": [] }
+      }
+    },
+    {
+      "id": "breakpoint-structural-change",
+      "title": "Desktop two-column section becoming a mobile stack",
+      "pattern": "breakpoint-structural-change",
+      "input": {
+        "root": { "id": "responsive-section", "type": "FRAME", "width": 1024, "height": 420 },
+        "nodes": [
+          { "id": "responsive-copy", "parentId": "responsive-section", "type": "FRAME", "x": 64, "y": 96, "width": 440, "height": 228 },
+          { "id": "responsive-heading", "parentId": "responsive-copy", "type": "TEXT", "x": 0, "y": 0, "width": 400, "height": 56 },
+          { "id": "responsive-body", "parentId": "responsive-copy", "type": "TEXT", "x": 0, "y": 80, "width": 440, "height": 48 },
+          { "id": "responsive-action", "parentId": "responsive-copy", "type": "FRAME", "x": 0, "y": 160, "width": 136, "height": 44 },
+          { "id": "responsive-art", "parentId": "responsive-section", "type": "RECTANGLE", "x": 568, "y": 64, "width": 392, "height": 292 },
+          { "id": "responsive-decoration", "parentId": "responsive-section", "type": "ELLIPSE", "x": 912, "y": 32, "width": 80, "height": 80, "visible": true }
+        ]
+      },
+      "expected": {
+        "geometryTolerance": 2,
+        "disposition": "ready",
+        "root": { "direction": "HORIZONTAL", "wrap": "NO_WRAP", "itemSpacing": 64, "counterAxisSpacing": 0, "padding": { "top": 64, "right": 64, "bottom": 64, "left": 64 }, "sizing": { "horizontal": "FILL", "vertical": "HUG", "minWidth": 480, "maxWidth": 1440, "minHeight": null, "maxHeight": null }, "flowChildIds": ["responsive-copy", "responsive-art"], "absoluteChildIds": ["responsive-decoration"] },
+        "hierarchy": [
+          { "id": "responsive-section", "parentId": null, "strategy": "AUTO_LAYOUT", "flowChildIds": ["responsive-copy", "responsive-art"], "absoluteChildIds": ["responsive-decoration"] },
+          { "id": "responsive-copy", "parentId": "responsive-section", "strategy": "AUTO_LAYOUT", "flowChildIds": ["responsive-heading", "responsive-body", "responsive-action"], "absoluteChildIds": [] },
+          { "id": "responsive-heading", "parentId": "responsive-copy", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "responsive-body", "parentId": "responsive-copy", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "responsive-action", "parentId": "responsive-copy", "strategy": "AUTO_LAYOUT", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "responsive-art", "parentId": "responsive-section", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] },
+          { "id": "responsive-decoration", "parentId": "responsive-section", "strategy": "ATOMIC", "flowChildIds": [], "absoluteChildIds": [] }
+        ],
+        "breakpoints": [
+          { "id": "desktop", "overrides": [] },
+          { "id": "tablet", "overrides": [{ "nodeId": "responsive-section", "itemSpacing": 32 }] },
+          { "id": "mobile", "overrides": [{ "nodeId": "responsive-section", "direction": "VERTICAL", "childOrder": ["responsive-copy", "responsive-art"], "hiddenChildIds": ["responsive-decoration"], "horizontalSizing": "FILL" }, { "nodeId": "responsive-copy", "horizontalSizing": "FILL" }] }
+        ],
+        "preserve": { "contentIds": ["responsive-heading", "responsive-body", "responsive-action"], "visualStyleIds": ["responsive-section", "responsive-copy", "responsive-action", "responsive-art", "responsive-decoration"], "componentReferenceIds": [] }
+      }
+    }
+  ]
+}
