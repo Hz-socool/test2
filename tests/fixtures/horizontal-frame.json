@@ -1,0 +1,82 @@
+{
+  "input": {
+    "id": "root-horizontal",
+    "name": "Toolbar",
+    "type": "FRAME",
+    "bounds": { "x": 100, "y": 120, "width": 440, "height": 80 },
+    "absoluteBounds": { "x": 100, "y": 120, "width": 440, "height": 80 },
+    "visible": true,
+    "locked": false,
+    "rotation": 0,
+    "isMask": false,
+    "opacity": 1,
+    "text": null,
+    "component": null,
+    "prototypeReactionCount": 0,
+    "hasContainerBackground": false,
+    "insideInstance": false,
+    "children": [
+      {
+        "id": "action-one",
+        "name": "Back",
+        "type": "RECTANGLE",
+        "bounds": { "x": 16, "y": 16, "width": 96, "height": 48 },
+        "absoluteBounds": { "x": 116, "y": 136, "width": 96, "height": 48 },
+        "visible": true,
+        "locked": false,
+        "rotation": 0,
+        "isMask": false,
+        "opacity": 1,
+        "text": null,
+        "component": null,
+        "prototypeReactionCount": 0,
+        "hasContainerBackground": false,
+        "insideInstance": false,
+        "children": []
+      },
+      {
+        "id": "action-two",
+        "name": "Preview",
+        "type": "RECTANGLE",
+        "bounds": { "x": 124, "y": 16, "width": 132, "height": 48 },
+        "absoluteBounds": { "x": 224, "y": 136, "width": 132, "height": 48 },
+        "visible": true,
+        "locked": false,
+        "rotation": 0,
+        "isMask": false,
+        "opacity": 1,
+        "text": null,
+        "component": null,
+        "prototypeReactionCount": 0,
+        "hasContainerBackground": false,
+        "insideInstance": false,
+        "children": []
+      },
+      {
+        "id": "action-three",
+        "name": "Publish",
+        "type": "RECTANGLE",
+        "bounds": { "x": 268, "y": 16, "width": 156, "height": 48 },
+        "absoluteBounds": { "x": 368, "y": 136, "width": 156, "height": 48 },
+        "visible": true,
+        "locked": false,
+        "rotation": 0,
+        "isMask": false,
+        "opacity": 1,
+        "text": null,
+        "component": null,
+        "prototypeReactionCount": 0,
+        "hasContainerBackground": false,
+        "insideInstance": false,
+        "children": []
+      }
+    ]
+  },
+  "expected": {
+    "direction": "HORIZONTAL",
+    "wrap": "WRAP",
+    "itemSpacing": 12,
+    "padding": { "top": 16, "right": 16, "bottom": 16, "left": 16 },
+    "orderedChildIds": ["action-one", "action-two", "action-three"]
+  }
+}
